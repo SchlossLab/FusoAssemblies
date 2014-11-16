@@ -113,7 +113,7 @@ There are 12741 contigs greater than 1kb. In the CONCOCT paper they processed th
 mpiexec -n 1 Ray -k 32 -p /mnt/EXT/Schloss-data/amanda/Fuso/concoct/testdata/species/run1/All_R1.fasta /mnt/EXT/Schloss-data/amanda/Fuso/concoct/testdata/species/run1/All_R2.fasta -o /mnt/EXT/Schloss-data/amanda/Fuso/concoct/testdata/species/run1/ray
 ```
 
-##CONCOCT processing
+##CONCOCT processingd
 
 Once the prelimnary assembly is done, the coverage table can be generated. First, cut up the contigs into chunks less than 10kb so that there isn't a bias towards mapping onto long contigs. Then, map the reads onto this "reference" of the contigs.
 
