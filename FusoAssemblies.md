@@ -113,7 +113,7 @@ There are 12741 contigs greater than 1kb. In the CONCOCT paper they processed th
 mpiexec -n 1 Ray -k 32 -p /mnt/EXT/Schloss-data/amanda/Fuso/concoct/testdata/species/run1/All_R1.fasta /mnt/EXT/Schloss-data/amanda/Fuso/concoct/testdata/species/run1/All_R2.fasta -o /mnt/EXT/Schloss-data/amanda/Fuso/concoct/testdata/species/run1/ray
 ```
 
-##CONCOCT processingd
+##CONCOCT processing
 
 Once the prelimnary assembly is done, the coverage table can be generated. First, cut up the contigs into chunks less than 10kb so that there isn't a bias towards mapping onto long contigs. Then, map the reads onto this "reference" of the contigs.
 
@@ -145,14 +145,40 @@ done
 Once the bam tables have been made, I used the gen_input_table.py script to make a single table the includes all the coverage information from each sample per contig.
 
 ```
-#!/bin/bash
 cd $CONCOCT_SPECIES/map
-python $CONCOCT/scripts/gen_input_table.py --isbedfiles --samplenames <(for s in Sample*; do echo $s | cut -d'_' -f1; done) $CONCOCT_SPECIES/run1/megahit/megahit.congits_c10K.fa */bowtie2_megahit/asm_megahit_pair-smds.coverage > concoct_inputtable.tsv
-mkdir $CONCOCT_EXAMPLE/concoct-input
-mv concoct_inputtable.tsv $CONCOCT_EXAMPLE/concoct-input/
+python $CONCOCT/scripts/gen_input_table.py --isbedfiles --samplenames <(for s in Sample*; do echo $s | cut -d'_' -f1; done) $CONCOCT_SPECIES/run1/megahit/megahit.congits_c10K.fa */bowtie2_megahit/asm_megahit_pair-smds.coverage> concoct_inputtable.tsv
+mkdir $CONCOCT_SPECIES/run1/concoct-input
+mv concoct_inputtable.tsv $CONCOCT_SPECIES/run1/concoct-input/
 ```
 
+Then cut the file to input into concoct.
 
+'''
+cut -f1,3-26 concoct-input/concoct_inputtable.tsv > concoct-input/concoct_inputtableR.tsv
+'''
+
+Finally, run concoct. I started by using these parameters
+
+'''
+concoct -c 40 --coverage_file concoct-input/concoct_inputtableR.tsv --composition_file $CONCOCT_SPECIES/run1/megahit/megahit.congits_c10K.fa -b concoct-output/
+'''
+
+It finished! And pretty quickly, too. Here is the logfile:
+
+'''
+2014-11-12 16:52:40,484:INFO:root:Results created at /mnt/EXT/Schloss-data/amand
+a/Fuso/concoct/testdata/species/run1/concoct-output
+2014-11-12 16:58:44,634:INFO:root:Successfully loaded composition data.
+2014-11-12 16:58:46,519:INFO:root:Successfully loaded coverage data.
+2014-11-12 16:58:48,360:INFO:root:Performed PCA, resulted in 0.9 dimentions
+2014-11-12 16:58:55,050:INFO:root:Wrote original filtered data file.
+2014-11-12 16:58:56,083:INFO:root:Wrote PCA transformed file.
+2014-11-12 16:58:56,087:INFO:root:Wrote PCA components file.
+2014-11-12 16:58:56,087:INFO:root:PCA transformed data.
+2014-11-12 16:58:56,087:INFO:root:Will call vbgmm with parameters: concoct-outpu
+t/, 40, 1000
+2014-11-12 17:02:33,220:INFO:root:CONCOCT Finished
+'''
 
 
 
