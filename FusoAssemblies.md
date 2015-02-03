@@ -110,7 +110,7 @@ There are 12741 contigs greater than 1kb. In the CONCOCT paper they processed th
 [Ray](http://denovoassembler.sourceforge.net/) is the assembler used in the CONCOCT paper, so I also tried to assemble the reads using this method. The method requires an MPI to run, which is what makes this method superior as it can run in parallel on multiple nodes. Since we don't have the ability to run MPI on multiple nodes on axiom, I assembled using just one node.
 
 ```
-mpiexec -n 1 Ray -k 32 -p /mnt/EXT/Schloss-data/amanda/Fuso/concoct/testdata/species/run1/All_R1.fasta /mnt/EXT/Schloss-data/amanda/Fuso/concoct/testdata/species/run1/All_R2.fasta -o /mnt/EXT/Schloss-data/amanda/Fuso/concoct/testdata/species/run1/ray
+mpiexec -n 1 ./Ray -k 32 -p /mnt/EXT/Schloss-data/amanda/Fuso/concoct/testdata/species/run1/All_R1.fasta /mnt/EXT/Schloss-data/amanda/Fuso/concoct/testdata/species/run1/All_R2.fasta -o /mnt/EXT/Schloss-data/amanda/Fuso/concoct/testdata/species/run1/ray
 ```
 
 ##CONCOCT processing
